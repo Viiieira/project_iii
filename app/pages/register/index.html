@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Registration</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+		/>
+		<link rel="stylesheet" href="../styles/main.css" />
+	</head>
+	<body data-theme="light">
+		<div id="form-wrapper">
+			<div class="form-container">
+				<div class="form-brand">Register</div>
+				<form method="post" autocomplete="off">
+					<div class="form-input">
+						<label for="emailField">
+							E-mail <span class="text-secondary">*</span>
+						</label>
+						<input
+							type="email"
+							name="email"
+							id="emailField"
+							placeholder="john@doe.com"
+							value=""
+							required
+							autofocus
+						/>
+					</div>
+					<div class="form-input">
+						<label for="usernameField"></label>
+					</div>
+					<div class="form-input">
+						<label for="passwordField"
+							>Password
+							<span class="text-secondary">*</span></label
+						>
+						<input
+							type="password"
+							name="password"
+							id="passwordField"
+							placeholder="********"
+							required
+						/>
+					</div>
+					<button type="submit" name="loginSubmit">
+						<i class="fa-solid fa-right-to-bracket"></i> Login
+					</button>
+				</form>
+				<a href="../login/"
+					>You already have an account? Log in here</a
+				>
+			</div>
+		</div>
+
+		<script src="../scripts/toggleTheme.js"></script>
+	</body>
+</html>

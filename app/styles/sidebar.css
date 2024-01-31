@@ -1,0 +1,133 @@
+/* Sidebar */
+#sidebar {
+	max-width: 300px;
+	height: 100%;
+	padding: 2rem;
+	padding-top: 1rem;
+	display: flex;
+	flex-direction: column;
+	background-color: var(--primary-variant);
+	border-top-left-radius: 0.75rem;
+	border-bottom-left-radius: 0.75rem;
+}
+
+#sidebar hr {
+	margin-block: 0px;
+}
+
+#sidebar a,
+#sidebar a:hover,
+#sidebar a:focus {
+	text-decoration: none;
+}
+
+#sidebar .sidebar-brand-sm {
+	display: none;
+}
+
+#sidebar .sidebar-brand-sm,
+#sidebar .sidebar-brand {
+	color: var(--title-color);
+	font-size: 2.5rem;
+	font-weight: var(--fw-bold);
+	font-style: italic;
+	padding-bottom: 0.65rem;
+	transition: color 0.2s;
+}
+
+#sidebar .sidebar-brand-sm:hover,
+#sidebar .sidebar-brand:hover,
+#sidebar .sidebar-brand-sm:focus,
+#sidebar .sidebar-brand:focus {
+	color: var(--tertiary);
+}
+
+.sidebar-tabs {
+	color: var(--muted-color);
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	flex-grow: 2;
+	justify-content: flex-start;
+	height: auto;
+	margin: 2rem 0;
+}
+
+.sidebar-title {
+	font-size: 1rem;
+	letter-spacing: 0.07rem;
+	font-weight: var(--fw-bold);
+	margin-left: 0.5rem;
+}
+
+a.sidebar-link {
+	display: flex;
+	gap: 1rem;
+	color: var(--muted-color);
+	font-weight: var(--fw-bold);
+	background-color: transparent;
+	border-radius: var(--rounded-sm);
+	padding: 0.25rem 0.5rem;
+	font-size: 1rem;
+	transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+a.sidebar-link:hover {
+	background-color: rgba(0, 0, 0, 0.125);
+	color: var(--text-color);
+}
+
+a.sidebar-link:hover i,
+a.sidebar-link:hover span {
+	color: var(--title-color);
+}
+
+.sidebar-link .sidebar-link-icon {
+	flex-basis: calc(100% / 5);
+}
+
+.sidebar-link .sidebar-link-icon span {
+	flex-grow: 1;
+}
+
+.sidebar-link i,
+.sidebar-link span {
+	align-self: center;
+}
+
+@media screen and (max-width: 1024px) {
+	#sidebar {
+		width: 90px;
+		padding: 0rem;
+	}
+
+	.sidebar-link-icon,
+	#sidebar .sidebar-brand-sm {
+		margin: 0 auto;
+	}
+
+	.sidebar-link span,
+	.sidebar-title,
+	.sidebar-brand {
+		display: none;
+	}
+
+	#sidebar .sidebar-brand-sm {
+		display: inline;
+		max-height: 60px;
+	}
+}
+
+@media screen and (max-width: 425px) {
+	#sidebar {
+		border-top-left-radius: 0rem;
+		border-bottom-left-radius: 0rem;
+		max-width: 60px;
+		padding: 0;
+	}
+
+	#sidebar .sidebar-brand-sm {
+		font-size: 2rem;
+		max-height: 45px;
+	}
+}
