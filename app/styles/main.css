@@ -155,8 +155,23 @@ body {
 
 .container {
 	width: 80%;
-	margin: 0 auto;
+	margin: 2rem auto;
 }
 
 .flex { display: flex }
 .justify-content-space-between { justify-content: space-between; }
+.align-items-center { align-items: center; }
+.gap-1 { gap: 1rem }
+.gap-05 { gap: .5rem }
+.flex-wrap {flex-wrap: wrap;}
+
+section h1,
+section h2,
+section h3,
+section h4,
+section h5 {
+	/* margin-bottom: 5rem; */
+    text-align: center;
+    font-weight: 600;
+    color: var(--title-color);
+}
