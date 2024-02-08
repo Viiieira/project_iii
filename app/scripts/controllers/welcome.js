@@ -1,9 +1,8 @@
 import { formatDate } from '../../scripts/utils/formatDate.js';
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const apiUrl = "http://localhost:4242/api";
 
-    // Create error message div
     const errorMessageDiv = document.createElement("div");
     errorMessageDiv.id = "error-message";
     document.querySelector("#energy-data").insertAdjacentElement("beforebegin", errorMessageDiv);
@@ -17,11 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const data = await response.json();
-            updateUI(data); // Update the UI with the retrieved data
+            updateUI(data);
         } catch (error) {
             console.error("Error fetching data:", error);
 
-            // Display an error message to the user
             displayMessage("<b>Failed to fetch data.</b> Please try again later.", "error")
         }
     }
@@ -31,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
         if (confirmed) {
             try {
-                const apiUrl = "http://localhost:4242/api"; // Replace with your API URL
+                const apiUrl = "http://localhost:4242/api";
                 const response = await fetch(`${apiUrl}/energy/delete/${id}`, {
                     method: 'DELETE'
                 });
@@ -40,10 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     throw new Error(`Error: ${response.status}`);
                 }
     
-                // console.log("Item deleted successfully");
                 displayMessage("<b>Energy successfully deleted.</b>", "success");
 
-                fetchData();
+                await fetchData();
             } catch (error) {
                 console.error("Error deleting item:", error);
             }
@@ -80,11 +77,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Fetch data initially and set up periodic updates if needed
-    fetchData();
+    await fetchData();
 
     const refreshButton = document.querySelector("#refresh");
-    refreshButton.addEventListener("click", () => {
-        fetchData();
+    refreshButton.addEventListener("click", async () => {
+        await fetchData();
         console.log("Succesfully updated table's data!");
     });
 
