@@ -1,11 +1,9 @@
-import { formatDate } from '../../scripts/utils/formatDate.js';
+// TODO: CREATE ENERGY
+
+import { formatDate, displayMessage } from '../../scripts/utils/utils.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const apiUrl = "http://localhost:4242/api";
-
-    const errorMessageDiv = document.createElement("div");
-    errorMessageDiv.id = "error-message";
-    document.querySelector("#energy-data").insertAdjacentElement("beforebegin", errorMessageDiv);
 
     async function fetchData() {
         try {
@@ -19,7 +17,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             updateUI(data);
         } catch (error) {
             console.error("Error fetching data:", error);
-
             displayMessage("<b>Failed to fetch data.</b> Please try again later.", "error", "energy-data");
         }
     }
@@ -90,25 +87,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         await fetchData();
         console.log("Succesfully updated table's data!");
     });
-
-    // Function to display error message
-    function displayMessage(message, type, beforeElementId) {
-        const errorMessage = document.createElement("div");
-        errorMessage.id = "error-message";
-        errorMessage.innerHTML = `
-        <div class="alert-message" data-style="${type}">
-            <span>${message}</span>
-            <i class="fa-solid fa-xmark"></i>
-        </div>
-        `;
-        const energyDataElement = document.querySelector(`#${beforeElementId}`);
-        energyDataElement.parentNode.insertBefore(errorMessage, energyDataElement);
-
-        const closeIcon = errorMessage.querySelector(".fa-xmark");
-        closeIcon.addEventListener("click", () => {
-            errorMessage.remove();
-        });
-    }
 
     const form = document.getElementById("add-energy-form");
 
