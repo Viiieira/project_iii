@@ -1,5 +1,3 @@
-// TODO: CREATE ENERGY
-
 import { formatDate, displayMessage } from '../../scripts/utils/utils.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
