@@ -6,6 +6,22 @@ document.addEventListener("DOMContentLoaded", async() => {
     const heading = document.createElement("h1");
     const button = document.createElement("button");
 
+    const navigationData = {
+        "Home": "../welcome/",
+        "Energy": "../energy/"
+    };
+    const ul = document.createElement("ul");
+
+    // Loop through the navigation data object
+    Object.entries(navigationData).forEach(([tabName, url]) => {
+        const li = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = url;
+        link.textContent = tabName;
+        li.appendChild(link);
+        ul.appendChild(li);
+    });
+
     // Set text content and attributes
     heading.textContent = `Welcome back, ${userData.username}`;
     button.className = "button-icon";
@@ -19,6 +35,7 @@ document.addEventListener("DOMContentLoaded", async() => {
 
     // Append elements to the nav
     nav.appendChild(heading);
+    nav.appendChild(ul);
     nav.appendChild(button);
 
     // Select the element with the class "container"

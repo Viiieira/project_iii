@@ -539,4 +539,12 @@ nav {
     align-items: center;
     text-align: left;
     justify-content: space-between;
+    gap: 2rem;
+}
+
+nav ul {
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+    flex-wrap: wrap;
 }
