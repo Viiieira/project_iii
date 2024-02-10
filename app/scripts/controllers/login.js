@@ -1,10 +1,19 @@
 import { displayMessage, isLoggedIn } from "../../scripts/utils/utils.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
+    // Check if there is a query parameter indicating that the account was created
+    const urlParams = new URLSearchParams(window.location.search);
+    const accountCreated = urlParams.get('accountCreated');
+
+    if (accountCreated === 'true') {
+        // Display the message indicating that the account was created
+        displayMessage(`<b>Your account was created successfully!</b> You can now log in.`, "success", "login-form");
+    }
+
     const apiUrl = "http://localhost:4242/api";
     const form = document.getElementById("login-form");
-    
-    if(isLoggedIn()) {
+
+    if (isLoggedIn()) {
         window.location.href = "../welcome/";
     }
 

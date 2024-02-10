@@ -1,60 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Registration</title>
-		<link
-			rel="stylesheet"
-			href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-		/>
-		<link rel="stylesheet" href="../styles/main.css" />
-	</head>
-	<body data-theme="light">
-		<div id="form-wrapper">
-			<div class="form-container">
-				<div class="form-brand">Register</div>
-				<form method="post" autocomplete="off">
-					<div class="form-input">
-						<label for="emailField">
-							E-mail <span class="text-secondary">*</span>
-						</label>
-						<input
-							type="email"
-							name="email"
-							id="emailField"
-							placeholder="john@doe.com"
-							value=""
-							required
-							autofocus
-						/>
-					</div>
-					<div class="form-input">
-						<label for="usernameField"></label>
-					</div>
-					<div class="form-input">
-						<label for="passwordField"
-							>Password
-							<span class="text-secondary">*</span></label
-						>
-						<input
-							type="password"
-							name="password"
-							id="passwordField"
-							placeholder="********"
-							required
-						/>
-					</div>
-					<button type="submit" name="loginSubmit">
-						<i class="fa-solid fa-right-to-bracket"></i> Login
-					</button>
-				</form>
-				<a href="../login/"
-					>You already have an account? Log in here</a
-				>
-			</div>
-		</div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Registration</title>
+		<!-- FontAwesome -->
+        <link
+            rel="stylesheet"
+            href="../../styles/fontawesome/css/fontawesome.css"
+        />
+        <link rel="stylesheet" href="../../styles/fontawesome/css/brands.css" />
+        <link rel="stylesheet" href="../../styles/fontawesome/css/solid.css" />
+		<!-- Custom CSS -->
+        <link rel="stylesheet" href="../../styles/main.css" />
+    </head>
+    <body>
+        <div id="form-wrapper">
+            <div class="form-container">
+                <div class="form-brand">Register</div>
+                <form method="post" id="register-form">
+                    <div
+                        class="flex flex-wrap align-items-center gap-1"
+                        style="width: 100%"
+                    >
+                        <div class="form-input">
+                            <label for="usernameField">
+                                Username
+                                <span class="text-secondary">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="username"
+                                id="usernameField"
+                                placeholder="John Doe"
+                                required
+                                autofocus
+                            />
+                        </div>
+                        <div class="form-input">
+                            <label for="emailField">
+                                E-mail
+                                <span class="text-secondary">*</span>
+                            </label>
+                            <input
+                                type="email"
+                                name="email"
+                                id="emailField"
+                                placeholder="john@doe.com"
+                                value=""
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div class="form-input">
+                        <label for="roleField">
+                            Role
+                            <span class="text-secondary">*</span>
+                        </label>
+                        <select name="role" id="roleField">
+                            <option selected disabled>
+                                ---- Pick a role ----
+                            </option>
+                            <option value="2">Producer</option>
+                            <option value="3">Consumer</option>
+                            <option value="4">Prosumer</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-wrap align-items-center gap-1">
+                        <div class="form-input">
+                            <label for="passwordField">
+                                Password
+                                <span class="text-secondary">*</span>
+                            </label>
+                            <input
+                                type="password"
+                                name="password"
+                                id="passwordField"
+                                placeholder="********"
+                                required
+                            />
+                        </div>
+                        <div class="form-input">
+                            <label for="passwordField">
+                                Confirm Password
+                                <span class="text-secondary">*</span>
+                            </label>
+                            <input
+                                type="password"
+                                name="confirmPassword"
+                                id="confirmPasswordField"
+                                placeholder="********"
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap align-items-center gap-1">
+                        <div class="form-input">
+                            <label for="addressField">
+                                Address
+                                <span class="text-secondary">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="address"
+                                id="addressField"
+                                placeholder="********"
+                                required
+                            />
+                        </div>
+                        <div class="form-input">
+                            <label for="passwordField">
+                                Phone
+                                <span class="text-secondary">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="phone"
+                                id="phoneField"
+                                placeholder="********"
+                                required
+                            />
+                        </div>
+                    </div>
+                    <button type="submit" name="registerSubmit">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        Create Account
+                    </button>
+                </form>
+                <a href="../login/">You already have an account? Log in here</a>
+            </div>
+        </div>
 
-		<script src="../scripts/toggleTheme.js"></script>
-	</body>
+        <script
+            type="module"
+            src="../../scripts/controllers/register.js"
+        ></script>
+    </body>
 </html>

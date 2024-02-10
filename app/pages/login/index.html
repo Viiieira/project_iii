@@ -1,58 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Login</title>
-		<link rel="stylesheet" href="../../styles/main.css" />
-	</head>
-	<body>
-		<div id="form-wrapper">
-			<div class="form-container">
-				<div class="form-brand">Log in</div>
-				<form method="post" id="login-form">
-					<div class="form-input">
-						<label for="email">
-							E-mail <span class="text-secondary">*</span>
-						</label>
-						<input
-							type="email"
-							name="email"
-							id="email"
-							placeholder="john@doe.com"
-							value=""
-							required
-							autofocus
-						/>
-						<span class="login-error"></span>
-					</div>
-					<div class="form-input">
-						<label for="password"
-							>Password
-							<span class="text-secondary">*</span></label
-						>
-						<input
-							type="password"
-							name="password"
-							id="password"
-							placeholder="********"
-							required
-						/>
-					</div>
-					<button type="submit" name="loginSubmit">
-						<i class="fa-solid fa-right-to-bracket"></i> Enter
-					</button>
-				</form>
-				<a href="../register/"
-					>Don't have an account? Create one here</a
-				>
-			</div>
-		</div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login</title>
+        <!-- FontAwesome -->
+        <link
+            rel="stylesheet"
+            href="../../styles/fontawesome/css/fontawesome.css"
+        />
+        <link rel="stylesheet" href="../../styles/fontawesome/css/brands.css" />
+        <link rel="stylesheet" href="../../styles/fontawesome/css/solid.css" />
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="../../styles/main.css" />
+    </head>
+    <body>
+        <div id="form-wrapper">
+            <div class="form-container">
+                <div class="form-brand">Log in</div>
+                <form method="post" id="login-form">
+                    <div class="form-input">
+                        <label for="email">
+                            E-mail <span class="text-secondary">*</span>
+                        </label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            placeholder="john@doe.com"
+                            value=""
+                            required
+                            autofocus
+                        />
+                        <span class="login-error"></span>
+                    </div>
+                    <div class="form-input">
+                        <label for="password"
+                            >Password
+                            <span class="text-secondary">*</span></label
+                        >
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="********"
+                            required
+                        />
+                    </div>
+                    <button type="submit" name="loginSubmit">
+                        <i class="fa-solid fa-right-to-bracket"></i> Enter
+                    </button>
+                </form>
+                <a href="../register/"
+                    >Don't have an account? Create one here</a
+                >
+            </div>
+        </div>
 
-		<!-- <script src="../../scripts/toggleTheme.js"></script> -->
-		<script
-            type="module"
-            src="../../scripts/controllers/login.js"
-        ></script>
-	</body>
+        <!-- <script src="../../scripts/toggleTheme.js"></script> -->
+        <script type="module" src="../../scripts/controllers/login.js"></script>
+    </body>
 </html>
