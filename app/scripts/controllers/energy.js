@@ -2,78 +2,166 @@ import { formatDate, displayMessage, isLoggedIn } from '../utils/utils.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const apiUrl = "http://localhost:4242/api";
+    const user = JSON.parse(localStorage.getItem("userData"));
+    const logoutButton = document.getElementById("logout");
 
-    // Redirect the user to the login page
-    // If he's not logged in
-    if(!isLoggedIn()) {
+    if (!isLoggedIn()) {
         window.location.href = "../login/";
+    }
+
+    // Check if he's an admin
+    // Add the cell Options to the table
+    if (user.role === 1) {
+        const table = document.querySelector("#energy-data thead tr");
+        let th = document.createElement("th");
+        th.textContent = "Options";
+        table.appendChild(th);
+
+        const form = document.getElementById("add-energy-form");
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById("energyName").value;
+            const unit = document.getElementById("energyUnit").value;
+
+            try {
+                const response = await fetch(`${apiUrl}/energy/create`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${user.token}`
+                    },
+                    body: JSON.stringify({ name, unit }),
+                });
+
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        if (logoutButton) {
+                            logoutButton.click();
+                            return;
+                        }
+                        throw new Error(`Error: ${response.status}`);
+                    }
+                }
+
+                const data = await response.json();
+                console.log("New energy created:", data);
+                displayMessage(`${name} was added`, "success", "add-energy-form");
+                await fetchData();
+            } catch (error) {
+                console.error("Error creating new energy:", error);
+                displayMessage(`<b>${name}</b> already exists.`, "error", "add-energy-form");
+            }
+        });
+    } else {
+        const addEnergyTable = document.getElementById("add-energy-container");
+        addEnergyTable.remove();
     }
 
     async function fetchData() {
         try {
-            const response = await fetch(`${apiUrl}/energy/getAll`);
+            const response = await fetch(`${apiUrl}/energy/getAll`, {
+                headers: {
+                    "Authorization": `Bearer ${user.token}`
+                }
+            });
 
             if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
+                // Bearer token has expired
+                if (response.status === 403) {
+                    const logoutButton = document.getElementById("logout");
+                    if (logoutButton) {
+                        logoutButton.click();
+                        return;
+                    } else {
+                        throw new Error("Logout button not found.");
+                    }
+                } else {
+                    throw new Error(`Error: ${response.status}`);
+                }
             }
 
             const data = await response.json();
             updateUI(data);
         } catch (error) {
-            console.error("Error fetching data:", error);
+            console.error(`Error fetching data: ${error.message}`);
             displayMessage("<b>Failed to fetch data.</b> Please try again later.", "error", "energy-data");
         }
     }
 
-    async function deleteItem(item) {
-        const confirmed = confirm(`Do you want to proceed to delete ${item.name}?`);
-    
+
+    async function updateEnergyStatus(item) {
+        let confirmStr = item.enabled ? `Do you want to disable ${item.name}?` : `Do you want to enable ${item.name}?`;
+        const confirmed = confirm(confirmStr);
+
         if (confirmed) {
             try {
                 const apiUrl = "http://localhost:4242/api";
-                const response = await fetch(`${apiUrl}/energy/delete/${item.id}`, {
-                    method: 'DELETE'
+                const endpoint = item.enabled ? "disable" : "enable";
+                const response = await fetch(`${apiUrl}/energy/${endpoint}/${item.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        "Authorization": `Bearer ${user.token}`
+                    }
                 });
-    
+
                 if (!response.ok) {
-                    throw new Error(`Error: ${response.status}`);
+                    if (response.status === 403) {
+                        if (logoutButton) {
+                            logoutButton.click();
+                            return;
+                        } else {
+                            throw new Error("Logout button not found.");
+                        }
+                    } else {
+                        throw new Error(`Error: ${response.status}`);
+                    }
                 }
-    
-                displayMessage(`<b>${item.name}</b> successfully deleted.`, "success", "energy-data");
+                displayMessage(`<b>${item.name}</b> was updated.`, "success", "energy-data");
 
                 await fetchData();
             } catch (error) {
                 console.error("Error deleting item:", error);
             }
         } else {
-            console.log("Deletion cancelled");
+            console.log("Update was cancelled");
         }
     }
 
+    // ! Add option to delete the energy if it has been used anywhere
     function updateUI(data) {
         // Update your UI elements here based on the data received
         const appElement = document.querySelector("#energy-data tbody");
         appElement.innerHTML = "";
 
-        if(data.length > 0) {
+        if (data.length > 0) {
             data.forEach((item) => {
                 let formattedCreatedAtDt = formatDate(new Date(item.createdAt));
                 let formattedUpdatedAtDt = formatDate(new Date(item.updatedAt));
-    
+
                 const itemElement = document.createElement("tr");
-                itemElement.innerHTML += `<td>${item.name} (${item.unit})</td>`;
+
+                // Add user status div
+                const userStatusDiv = document.createElement("div");
+                userStatusDiv.className = "user-status";
+                userStatusDiv.setAttribute("data-enabled", item.enabled);
+
+                itemElement.innerHTML += `<td class="flex align-items-center flex-wrap gap-05">${userStatusDiv.outerHTML}${item.name} (${item.unit})</td>`;
                 itemElement.innerHTML += `<td>${formattedCreatedAtDt}</td>`;
                 itemElement.innerHTML += `<td>${formattedUpdatedAtDt}</td>`;
-    
-                const updateButton = createButton(`updateEnergy.html?id=${item.id}`, "Update", "pen");
-                const deleteButton = createButton("", "Delete", "trash", () => deleteItem(item));
-    
-                const buttonCell = document.createElement("td");
-                buttonCell.className = "table-options";
-                buttonCell.appendChild(updateButton);
-                buttonCell.appendChild(deleteButton);
-    
-                itemElement.appendChild(buttonCell);
+
+                // If the user is an admin
+                if (user.role === 1) {
+                    const updateButton = createButton(`updateEnergy.html?id=${item.id}`, "Update", "pen");
+                    const deleteButton = createButton(null, item.enabled ? "Disable" : "Enable", item.enabled ? "eye-slash" : "eye", () => updateEnergyStatus(item));
+
+                    const buttonCell = document.createElement("td");
+                    buttonCell.className = "table-options";
+                    buttonCell.appendChild(updateButton);
+                    buttonCell.appendChild(deleteButton);
+                    itemElement.appendChild(buttonCell);
+                }
+
                 appElement.appendChild(itemElement);
             });
         } else {
@@ -90,37 +178,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     refreshButton.addEventListener("click", async () => {
         await fetchData();
         console.log("Succesfully updated table's data!");
-    });
-
-    const form = document.getElementById("add-energy-form");
-
-    form.addEventListener("submit", async (event) => {
-        event.preventDefault(); // Prevent default form submission behavior
-
-        const name = document.getElementById("energyName").value;
-        const unit = document.getElementById("energyUnit").value;
-
-        try {
-            const response = await fetch(`${apiUrl}/energy/create`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ name, unit }),
-            });
-
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log("New energy created:", data);
-            displayMessage(`${name} was added`, "success", "add-energy-form");
-            await fetchData();
-        } catch (error) {
-            console.error("Error creating new energy:", error);
-            displayMessage(`<b>${name}</b> already exists.`, "error", "add-energy-form");
-        }
     });
 });
 

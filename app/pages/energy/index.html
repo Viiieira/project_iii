@@ -36,21 +36,36 @@
                     <th>Name</th>
                     <th>Created At</th>
                     <th>Updated At</th>
-                    <th>Options</th>
                 </thead>
                 <tbody></tbody>
             </table>
 
-            <div class="dashboard-form">
+            <div class="dashboard-form" id="add-energy-container">
                 <h1>Create Energy</h1>
                 <form method="post" id="add-energy-form">
-                    <div class="input-group">
-                        <label for="energyName">Name <span class="colored">*</span></label>
-                        <input type="text" name="name" id="energyName" required />
-                    </div>
-                    <div class="input-group">
-                        <label for="energyUnit">Unit <span class="colored">*</span></label>
-                        <input type="text" name="unit" id="energyUnit" required />
+                    <div class="flex flex-wrap align-items-center gap-1">
+                        <div class="input-group flex-grow">
+                            <label for="energyName"
+                                >Name <span class="colored">*</span></label
+                            >
+                            <input
+                                type="text"
+                                name="name"
+                                id="energyName"
+                                required
+                            />
+                        </div>
+                        <div class="input-group flex-grow">
+                            <label for="energyUnit"
+                                >Unit <span class="colored">*</span></label
+                            >
+                            <input
+                                type="text"
+                                name="unit"
+                                id="energyUnit"
+                                required
+                            />
+                        </div>
                     </div>
                     <button type="submit" class="button-icon">
                         <i class="fa-regular fa-plus"></i>

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async() => {
+document.addEventListener("DOMContentLoaded", async () => {
     const userData = JSON.parse(localStorage.getItem("userData"));
 
     // Create elements
@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", async() => {
     <span>Logout</span>
     `;
 
-
     // Append elements to the nav
     nav.appendChild(heading);
     nav.appendChild(ul);
@@ -44,11 +43,8 @@ document.addEventListener("DOMContentLoaded", async() => {
     // Append nav after the container element
     container.insertBefore(nav, container.firstChild);
 
-    // Add event listener to the logout button
     button.addEventListener("click", () => {
-        // Remove userData from localStorage
         localStorage.removeItem("userData");
-        // Redirect user to the login page
         window.location.href = "../login/";
     });
 });
