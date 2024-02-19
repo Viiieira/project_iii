@@ -1,4 +1,10 @@
-import { formatDate, displayMessage, isLoggedIn } from '../utils/utils.js';
+import {
+    formatDate,
+    displayMessage,
+    isLoggedIn,
+    isBearerTokenValid,
+    createButton
+} from '../utils/utils.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const apiUrl = "http://localhost:4242/api";
@@ -66,19 +72,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             });
 
-            if (!response.ok) {
-                // Bearer token has expired
-                if (response.status === 403) {
-                    const logoutButton = document.getElementById("logout");
-                    if (logoutButton) {
-                        logoutButton.click();
-                        return;
-                    } else {
-                        throw new Error("Logout button not found.");
-                    }
-                } else {
-                    throw new Error(`Error: ${response.status}`);
-                }
+            if (!isBearerTokenValid(response)) {
+                logoutButton.click();
+                return;
             }
 
             const data = await response.json();
@@ -89,6 +85,33 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    async function deleteEnergy(item) {
+        const confirmed = confirm(`Do you want to delete ${item.name}?`);
+
+        if (confirmed) {
+            const apiUrl = "http://localhost:4242/api";
+            const response = await fetch(`${apiUrl}/energy/delete/${item.id}`, {
+                method: 'DELETE',
+                headers: {
+                    "Authorization": `Bearer ${user.token}`
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 403) {
+                    if (logoutButton) {
+                        logoutButton.click();
+                        return;
+                    } else {
+                        throw new Error(`Error: ${response.status}`);
+                    }
+                }
+            }
+
+            displayMessage(`<b>${item.name}</b> was successfully deleted.`, "success", "energy-data");
+            await fetchData();
+        }
+    }
 
     async function updateEnergyStatus(item) {
         let confirmStr = item.enabled ? `Do you want to disable ${item.name}?` : `Do you want to enable ${item.name}?`;
@@ -96,7 +119,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (confirmed) {
             try {
-                const apiUrl = "http://localhost:4242/api";
                 const endpoint = item.enabled ? "disable" : "enable";
                 const response = await fetch(`${apiUrl}/energy/${endpoint}/${item.id}`, {
                     method: 'PATCH',
@@ -105,18 +127,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     }
                 });
 
-                if (!response.ok) {
-                    if (response.status === 403) {
-                        if (logoutButton) {
-                            logoutButton.click();
-                            return;
-                        } else {
-                            throw new Error("Logout button not found.");
-                        }
-                    } else {
-                        throw new Error(`Error: ${response.status}`);
-                    }
+                if (!isBearerTokenValid(response)) {
+                    logoutButton.click();
+                    return;
                 }
+
                 displayMessage(`<b>${item.name}</b> was updated.`, "success", "energy-data");
 
                 await fetchData();
@@ -142,11 +157,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const itemElement = document.createElement("tr");
 
                 // Add user status div
-                const userStatusDiv = document.createElement("div");
-                userStatusDiv.className = "user-status";
-                userStatusDiv.setAttribute("data-enabled", item.enabled);
+                const statusDiv = document.createElement("div");
+                statusDiv.className = "user-status";
+                statusDiv.setAttribute("data-enabled", item.enabled);
 
-                itemElement.innerHTML += `<td class="flex align-items-center flex-wrap gap-05">${userStatusDiv.outerHTML}${item.name} (${item.unit})</td>`;
+                itemElement.innerHTML += `<td class="flex align-items-center flex-wrap gap-05">${statusDiv.outerHTML}${item.name} (${item.unit})</td>`;
                 itemElement.innerHTML += `<td>${formattedCreatedAtDt}</td>`;
                 itemElement.innerHTML += `<td>${formattedUpdatedAtDt}</td>`;
 
@@ -180,13 +195,3 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Succesfully updated table's data!");
     });
 });
-
-function createButton(href, label, iconClass, onClick) {
-    const button = document.createElement("button");
-    button.className = "button-icon";
-    button.innerHTML = `
-        <i class="fa-regular fa-${iconClass}"></i>
-        <span>${label}</span>`;
-    button.onclick = onClick ? onClick : () => window.location.href = href;
-    return button;
-}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Users</title>
+        <!-- FontAwesome -->
+        <link
+            rel="stylesheet"
+            href="../../styles/fontawesome/css/fontawesome.css"
+        />
+        <link rel="stylesheet" href="../../styles/fontawesome/css/brands.css" />
+        <link rel="stylesheet" href="../../styles/fontawesome/css/solid.css" />
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="../../styles/main.css" />
+    </head>
+    <!-- <body class="light-mode"> -->
+    <body>
+        <section class="container">
+            <div
+                class="flex justify-content-space-between align-items-center flex-wrap"
+                style="margin-bottom: 1rem"
+            >
+                <h1>Users</h1>
+                <button id="refresh" class="button-icon" data-theme="secondary">
+                    <i class="fa-regular fa-arrows-rotate"></i>
+                </button>
+            </div>
+            <table id="users-data" class="table">
+                <thead>
+                    <th>Username</th>
+                    <th>E-mail</th>
+                    <th>Role</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th>Options</th>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <script type="module" src="../../scripts/controllers/users.js"></script>
+        <script type="module" src="../../scripts/utils/navbar.js"></script>
+    </body>
+</html>

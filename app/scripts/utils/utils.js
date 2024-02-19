@@ -5,7 +5,7 @@ export function formatDate(date) {
     var hours = date.getHours().toString().padStart(2, '0');
     var minutes = date.getMinutes().toString().padStart(2, '0');
     var seconds = date.getSeconds().toString().padStart(2, '0');
-  
+
     return month + '/' + day + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
 }
 
@@ -33,4 +33,24 @@ export function isLoggedIn() {
     const userData = localStorage.getItem("userData");
 
     return userData !== null;
+}
+
+export function createButton(href, label, iconClass, onClick) {
+    const button = document.createElement("button");
+    button.className = "button-icon";
+    button.innerHTML = `
+        <i class="fa-regular fa-${iconClass}"></i>
+        <span>${label}</span>`;
+    button.onclick = onClick ? onClick : () => window.location.href = href;
+    return button;
+}
+
+export function isBearerTokenValid(response) {
+    if (!response.ok) {
+        // Bearer token has expired
+        if (response.status === 403) {
+            return false;
+        }
+    }
+    return true;
 }

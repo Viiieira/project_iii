@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         "Home": "../welcome/",
         "Energy": "../energy/"
     };
+    // Admin
+    if (userData.role === 1) {
+        navigationData["Users"] = "../users/";
+    }
     const ul = document.createElement("ul");
 
     // Loop through the navigation data object
