@@ -85,34 +85,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    async function deleteEnergy(item) {
-        const confirmed = confirm(`Do you want to delete ${item.name}?`);
-
-        if (confirmed) {
-            const apiUrl = "http://localhost:4242/api";
-            const response = await fetch(`${apiUrl}/energy/delete/${item.id}`, {
-                method: 'DELETE',
-                headers: {
-                    "Authorization": `Bearer ${user.token}`
-                }
-            });
-
-            if (!response.ok) {
-                if (response.status === 403) {
-                    if (logoutButton) {
-                        logoutButton.click();
-                        return;
-                    } else {
-                        throw new Error(`Error: ${response.status}`);
-                    }
-                }
-            }
-
-            displayMessage(`<b>${item.name}</b> was successfully deleted.`, "success", "energy-data");
-            await fetchData();
-        }
-    }
-
     async function updateEnergyStatus(item) {
         let confirmStr = item.enabled ? `Do you want to disable ${item.name}?` : `Do you want to enable ${item.name}?`;
         const confirmed = confirm(confirmStr);

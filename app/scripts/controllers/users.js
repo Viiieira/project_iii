@@ -14,17 +14,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = "../welcome/";
     }
 
-    const users = await fetchUsersData();
-    const userRoles = await fetchUserRolesData();
+    let users = await fetchUsersData();
+    let userRoles = await fetchUserRolesData();
     updateUI(users, userRoles);
 
     const refreshButton = document.querySelector("#refresh");
     refreshButton.addEventListener("click", async () => {
-        const users = await fetchUsersData();
-        users.forEach((user) => {
-            console.log(user);
-        })
-        const userRoles = await fetchUserRolesData();
+        let users = await fetchUsersData();
+        let userRoles = await fetchUserRolesData();
         updateUI(users, userRoles);
         console.log("Succesfully updated table's data!");
     });
@@ -94,15 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         null,
                         item.enabled ? "Disable" : "Enable",
                         item.enabled ? "eye-slash" : "eye",
-                        () => {
-                            updateUserStatus(item)
-                            if (refreshButton) {
-                                refreshButton.click();
-
-                            } else {
-                                throw new Error("Refresh button doesnt exist.");
-                            }
-                        }
+                        () => updateUserStatus(item)
                     );
 
                     const buttonCell = document.createElement("td");
@@ -133,6 +122,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                         "Authorization": `Bearer ${user.token}`
                     }
                 });
+
+                // Update UI after status update
+                refreshButton.click();
+
                 displayMessage(`<b>${item.username}</b> was updated.`, "success", "users-data");
             } catch (error) {
                 throw new Error(`Error updating user status: ${error.message}`);
