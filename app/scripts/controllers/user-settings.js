@@ -1,9 +1,7 @@
 import {
-    // formatDate,
     displayMessage,
     isLoggedIn,
     isBearerTokenValid,
-    // createButton
 } from '../utils/utils.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -19,13 +17,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Hide Energy Preferences if its an admin
     // Since Admins are only there to admin
     // and not to be a producer/consumer
-    if (user.role === 1) {
-        energyPreferencesDiv.remove();
-    } else {
+    if (user.role !== 1) {
+        energyPreferencesDiv.classList.remove("hidden");
+
         // Load all the Energy Preferences for Producer/Consumers
         let energies = await fetchEnergies();
         let userEnergyPrefs = await fetchUserEnergyPreferences();
-        updateUI(energies, userEnergyPrefs);
+        updateEnergyPrefUI(energies, userEnergyPrefs);
 
         const refresh = document.getElementById("refresh");
         const save = document.getElementById("save");
@@ -38,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         refresh.addEventListener("click", async () => {
             let energies = await fetchEnergies();
             let userEnergyPrefs = await fetchUserEnergyPreferences();
-            updateUI(energies, userEnergyPrefs);
+            updateEnergyPrefUI(energies, userEnergyPrefs);
             console.log("Refreshed energy preferences data.");
         })
 
@@ -80,6 +78,47 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
     }
+
+    // My Settings
+    let userInfo = await fetchUserInfo();
+
+    const myInfoFormBtn = document.querySelector("#my-settings-form button[type='submit']");
+
+    let username = document.getElementById("username");
+    let email = document.getElementById("email");
+    let address = document.getElementById("address");
+    let phone = document.getElementById("phone");
+
+    // Load user's data
+    username.value = userInfo.username;
+    email.value = userInfo.email;
+    address.value = userInfo.address;
+    phone.value = userInfo.phone;
+
+    // Save new user info
+    myInfoFormBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        // Check if this username is already in-use
+        let users = await fetchUsers();
+
+        if (!isUsernameUnique(users, username.value, user.id)) {
+            displayMessage("<b>This Username already exists. Pick another one.</b>", "error", "my-settings-form");
+            return;
+        }
+
+        // Check if this email is already in-use
+        if (!isEmailUnique(users, email.value, user.id)) {
+            displayMessage("<b>This E-mail already exists. Pick another one.</b>", "error", "my-settings-form");
+            return;
+
+        }
+        // Check if this phone is already in-use
+        if (!isPhoneUnique(users, phone.value, user.id)) {
+            displayMessage("<b>This Phone already exists. Pick another one.</b>", "error", "my-settings-form");
+            return;
+        }
+    });
 
     async function fetchEnergies() {
         try {
@@ -180,8 +219,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    function updateUI(energies, userEnergyPrefs) {
-        const tbody = document.querySelector("#user-settings-data tbody");
+    function updateEnergyPrefUI(energies, userEnergyPrefs) {
+        const tbody = document.querySelector("#user-energy-preferences-data tbody");
         tbody.innerHTML = "";
 
         if (energies.length > 0) {
@@ -220,5 +259,74 @@ document.addEventListener("DOMContentLoaded", async () => {
             tr.appendChild(td);
             tbody.appendChild(tr);
         }
+    }
+
+    async function fetchUserInfo() {
+        try {
+            const response = await fetch(`${apiUrl}/user/getByID/${user.id}`, {
+                headers: {
+                    "Authorization": `Bearer ${user.token}`
+                }
+            });
+
+            if (!isBearerTokenValid(response)) {
+                const logoutButton = document.getElementById("logout");
+                logoutButton.click();
+                return;
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error(`Error fetching data: ${error.message}`);
+            displayMessage("<b>Failed to fetch data.</b> Please try again later.", "error", "my-settings");
+        }
+    }
+
+    async function fetchUsers() {
+        try {
+            const response = await fetch(`${apiUrl}/user/getAll`, {
+                headers: {
+                    "Authorization": `Bearer ${user.token}`
+                }
+            });
+
+            if (!isBearerTokenValid(response)) {
+                const logoutButton = document.getElementById("logout");
+                logoutButton.click();
+                return;
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error(`Error fetching data: ${error.message}`);
+            displayMessage("<b>Failed to fetch data.</b> Please try again later.", "error", "my-settings");
+        }
+    }
+
+    function isUsernameUnique(users, username, userID) {
+        for (const user of users) {
+            if (username === user.username && userID !== user.id) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function isEmailUnique(users, email, userID) {
+        for (const user of users) {
+            if (email === user.email && userID !== user.id) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function isPhoneUnique(users, phone, userID) {
+        for (const user of users) {
+            if (phone === user.phone && userID !== user.id) {
+                return false;
+            }
+        }
+        return true;
     }
 });

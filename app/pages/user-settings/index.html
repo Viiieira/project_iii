@@ -17,9 +17,96 @@
     <!-- <body class="light-mode"> -->
     <body>
         <section class="container">
-            <h1>My settings</h1>
-            <hr style="margin-block: 1rem" />
-            <div id="energy-preferences">
+            <div id="user-settings">
+                <h1 style="text-align: left">My information</h1>
+                <div class="dashboard-form" id="my-settings">
+                    <form method="post" id="my-settings-form">
+                        <div class="flex flex-wrap align-items center gap-1">
+                            <!-- Username -->
+                            <div class="input-group flex-grow">
+                                <label for="username"
+                                    >Username:
+                                    <span class="colored">*</span></label
+                                >
+                                <input type="text" id="username" required />
+                            </div>
+                            <!-- Email -->
+                            <div class="input-group flex-grow">
+                                <label for="email"
+                                    >E-mail:
+                                    <span class="colored">*</span></label
+                                >
+                                <input type="email" id="email" required />
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap align-items-center gap-1">
+                            <!-- Address -->
+                            <div class="input-group flex-grow">
+                                <label for="address"
+                                    >Address:
+                                    <span class="colored">*</span></label
+                                >
+                                <input type="text" id="address" required />
+                            </div>
+                            <!-- Phone -->
+                            <div class="input-group flex-grow">
+                                <label for="phone"
+                                    >Phone:
+                                    <span class="colored">*</span></label
+                                >
+                                <input type="text" id="phone" required />
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap align-items-center gap-1">
+                            <!-- Current Password -->
+                            <div class="input-group flex-grow">
+                                <label for="currentPassword"
+                                    >Current Password
+                                    <span class="colored">*</span></label
+                                >
+                                <input
+                                    type="password"
+                                    id="currentPassword"
+                                    required
+                                />
+                            </div>
+                            <!-- New Password -->
+                            <div class="input-group flex-grow">
+                                <label for="newPassword"
+                                    >New Password
+                                    <span class="colored">*</span></label
+                                >
+                                <input
+                                    type="password"
+                                    id="newPassword"
+                                    required
+                                />
+                            </div>
+                            <!-- Confirm New Password -->
+                            <div class="input-group flex-grow">
+                                <label for="confirmNewPassword"
+                                    >Confirm New Password
+                                    <span class="colored">*</span></label
+                                >
+                                <input
+                                    type="password"
+                                    id="confirmNewPassword"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <button type="submit" class="button-icon">
+                            <i class="fa-regular fa-floppy-disk"></i>
+                            <span>Save</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div
+                id="energy-preferences"
+                class="hidden"
+                style="margin-top: 2rem"
+            >
                 <div
                     class="flex justify-content-space-between align-items-center flex-wrap"
                     style="margin-bottom: 1rem"
@@ -44,7 +131,7 @@
                         </button>
                     </div>
                 </div>
-                <table class="table" id="user-settings-data">
+                <table class="table" id="user-energy-preferences-data">
                     <thead>
                         <tr>
                             <th>Energy</th>
