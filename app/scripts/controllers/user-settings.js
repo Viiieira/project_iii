@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Remove the save button if there are no energies to be checked
         if (energies.length == 0) {
-            console.log("Remove Save button");
             save.remove()
         }
 
@@ -62,19 +61,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             ) {
                 // See what items need to be removed
                 const removedItems = userEnergyPrefsID.filter(item => !checkedEnergies.includes(item));
-                console.log("Removed items: ", removedItems);
                 if (removedItems.length > 0) {
                     removedItems.forEach(async (energyID) => {
-                        await deleteUserEnergyPref(energyID);
+                        await deleteUserEnergyPref(user.id, energyID);
                     });
                 }
 
                 // See what items need to be added
                 const addedItems = checkedEnergies.filter(item => !userEnergyPrefsID.includes(item));
-                console.log("Added items: ", addedItems);
                 if (addedItems.length > 0) {
                     addedItems.forEach(async (energyID) => {
-                        await insertUserEnergyPref(energyID);
+                        await insertUserEnergyPref(user.id, energyID);
                     });
                 }
 
@@ -130,34 +127,51 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    async function deleteUserEnergyPref(energyID) {
+    async function deleteUserEnergyPref(userID, energyID) {
+        console.log(`User ID: ${user.id}, Energy ID: ${energyID}`);
         try {
-            const response = await fetch(`${apiUrl}/user_energy/delete/${user.id}/${energyID}`, {
+            let userEnergyPrefs = await fetchUserEnergyPreferences();
+
+            const response = await fetch(`${apiUrl}/user_energy/delete/${userID}/${energyID}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${user.token}`
                 }
             });
 
-            if (!response.ok) {
-                throw new Error(response.statusText);
+            // Item doesnt exist, therefore cant be deleted
+            // Just refresh the page
+            if (!response.ok && response.status === 404) {
+                return;
+            }
+
+            if (!isBearerTokenValid(response)) {
+                logoutButton.click();
+                return;
             }
         } catch (error) {
             console.error(`Error : ${error.message}`);
         }
     }
 
-    async function insertUserEnergyPref(energyID) {
+    async function insertUserEnergyPref(userID, energyID) {
+        const logoutButton = document.getElementById("logout");
         try {
-            const response = await fetch(`${apiUrl}/user_energy/create/${user.id}/${energyID}`, {
+            console.log(`User ID: ${user.id}, Energy ID: ${energyID}`);
+            const response = await fetch(`${apiUrl}/user_energy/create/${userID}/${energyID}`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${user.token}`
                 }
             });
 
+            // Item already exists, therefore cant be created again
+            // Just refresh the page
+            if (!response.ok && response.status === 400) {
+                return;
+            }
+
             if (!isBearerTokenValid(response)) {
-                const logoutButton = document.getElementById("logout");
                 logoutButton.click();
                 return;
             }
@@ -191,6 +205,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 const span = document.createElement("span");
                 span.textContent = `${energy.name} (${energy.unit})`;
+                span.style = "margin-left: 1rem";
 
                 td.appendChild(checkbox);
                 td.appendChild(span);
