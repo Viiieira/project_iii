@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (userData.role === 1) {
         navigationData["Users"] = "../users/";
         navigationData["Energy"] = "../energy/";
+    } else {
+        navigationData["Listings"] = "../listings/";
     }
     const ul = document.createElement("ul");
 
@@ -31,6 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Set text content and attributes
     heading.textContent = `Welcome back, ${userData.username}`;
 
+    // Add Logout button
     logoutButton.className = "button-icon";
     logoutButton.setAttribute("type", "button");
     logoutButton.setAttribute("id", "logout");
@@ -39,6 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     <span>Logout</span>
     `;
 
+    // Add User Settings Button
     settingsButton.className = "button-icon";
     settingsButton.setAttribute("type", "button");
     settingsButton.setAttribute("id", "user-settings");
@@ -46,13 +50,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     <i class="fa-solid fa-gear"></i>
     `
 
+    // Add both buttons to the right side user nav
     userNav.classList.add("flex", "flex-wrap", "align-items-center", "gap-05");
+    userNav.appendChild(logoutButton);
+    userNav.appendChild(settingsButton);
 
     // Append elements to the nav
     nav.appendChild(heading);
     nav.appendChild(ul);
-    userNav.appendChild(logoutButton);
-    userNav.appendChild(settingsButton);
     nav.appendChild(userNav);
 
     // Select the element with the class "container"

@@ -73,6 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             if (!isBearerTokenValid(response)) {
+                const logoutButton = document.getElementById("logout");
                 logoutButton.click();
                 return;
             }
