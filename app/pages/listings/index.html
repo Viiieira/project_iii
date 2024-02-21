@@ -17,28 +17,54 @@
     <!-- <body class="light-mode"> -->
     <body>
         <section class="container">
+            <!-- Producer Listings -->
+            <div id="producer-listings">
+                <div
+                    class="flex flex-wrap align-items-center justify-content-space-between hidden"
+                    style="margin-bottom: 1rem"
+                >
+                    <h1>My Listings</h1>
+                    <div
+                        class="flex flex-wrap align-items-center gap-05"
+                        style="margin-bottom: 1rem"
+                    >
+                        <button
+                            type="button"
+                            class="button-icon"
+                            id="add-listing"
+                        >
+                            <i class="fa-regular fa-plus"></i>
+                            <span>New Listing</span>
+                        </button>
+                        <button
+                            type="button"
+                            class="button-icon"
+                            id="refreshProducerListings"
+                            data-theme="secondary"
+                        >
+                            <i class="fa-regular fa-arrows-rotate"></i>
+                        </button>
+                    </div>
+                </div>
+                <div
+                    id="producer-listings-wrapper"
+                    class="flex flex-wrap gap-1 flex-direction-column"
+                ></div>
+            </div>
             <!-- Listing Listings -->
             <div
                 class="flex flex-wrap align-items-center justify-content-space-between"
+                style="margin: 1rem 0"
             >
-                <h1>Listings</h1>
-                <div
-                    class="flex flex-wrap align-items-center gap-05"
-                    style="margin-bottom: 1rem"
+                <h1>All Listings</h1>
+                <button
+                    type="button"
+                    class="button-icon"
+                    id="refresh"
+                    data-theme="secondary"
                 >
-                    <button type="button" class="button-icon" id="add-listing">
-                        <i class="fa-regular fa-plus"></i>
-                        <span>New Listing</span>
-                    </button>
-                    <button
-                        type="button"
-                        class="button-icon"
-                        id="refresh"
-                        data-theme="secondary"
-                    >
-                        <i class="fa-regular fa-arrows-rotate"></i>
-                    </button>
-                </div>
+                    <i class="fa-regular fa-arrows-rotate"></i>
+                </button>
             </div>
             <div
                 id="listings-wrapper"
