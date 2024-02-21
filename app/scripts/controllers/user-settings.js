@@ -99,9 +99,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     myInfoFormBtn.addEventListener("click", async (e) => {
         e.preventDefault();
 
-        // Check if this username is already in-use
         let users = await fetchUsers();
 
+        // Check if this username is already in-use
         if (!isUsernameUnique(users, username.value, user.id)) {
             displayMessage("<b>This Username already exists. Pick another one.</b>", "error", "my-settings-form");
             return;
@@ -118,6 +118,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             displayMessage("<b>This Phone already exists. Pick another one.</b>", "error", "my-settings-form");
             return;
         }
+
+        await updateUserInfo(username.value, email.value, address.value, phone.value, user);
     });
 
     async function fetchEnergies() {
@@ -169,8 +171,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function deleteUserEnergyPref(userID, energyID) {
         console.log(`User ID: ${user.id}, Energy ID: ${energyID}`);
         try {
-            let userEnergyPrefs = await fetchUserEnergyPreferences();
-
             const response = await fetch(`${apiUrl}/user_energy/delete/${userID}/${energyID}`, {
                 method: "DELETE",
                 headers: {
@@ -328,5 +328,31 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         }
         return true;
+    }
+
+    async function updateUserInfo(username, email, phone, address, user) {
+        try {
+            await fetch(`${apiUrl}/user/update/${user.id}`, {
+                method: "PATCH",
+                headers: {
+                    "Authorization": `Bearer ${user.token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ username, email, phone, address }),
+            });
+
+            // Update localStorage
+            user.username = username;
+            localStorage.setItem("userData", JSON.stringify(user));
+
+            // Update navbar title user
+            const navUser = document.querySelector("nav h1");
+            navUser.textContent = `Welcome back, ${user.username}`;
+
+            displayMessage(`<b>Your user's information was succesfully updated.</b>`, "success", "my-settings-form");
+        } catch (error) {
+            displayMessage(`<b>${error.message}</b>`, "error", "my-settings-form");
+            throw new Error(error.message);
+        }
     }
 });

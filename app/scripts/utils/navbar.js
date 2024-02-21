@@ -10,13 +10,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const navigationData = {
         "Home": "../welcome/",
+        "Listings": "../listings/"
     };
     // Admin
     if (userData.role === 1) {
         navigationData["Users"] = "../users/";
         navigationData["Energy"] = "../energy/";
-    } else {
-        navigationData["Listings"] = "../listings/";
     }
     const ul = document.createElement("ul");
 

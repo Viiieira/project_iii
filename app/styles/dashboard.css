@@ -563,3 +563,14 @@ nav ul {
     gap: 0.5rem;
     flex-wrap: wrap;
 }
+
+.listing {
+    padding: 0.5rem 2rem;
+    background-color: var(--primary-variant);
+    color: var(--subtitle-color);
+    border-radius: var(--rounded-md);
+}
+
+.listing h3 {
+    text-align: left;
+}
