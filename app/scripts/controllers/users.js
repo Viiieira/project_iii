@@ -62,6 +62,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         appElement.innerHTML = "";
 
         if (users.length > 0) {
+            // Not including his own account
+            users = users.filter(u => u.id !== user.id);
             users.forEach((item) => {
                 let formattedCreatedAtDt = formatDate(new Date(item.createdAt));
                 let formattedUpdatedAtDt = formatDate(new Date(item.updatedAt));

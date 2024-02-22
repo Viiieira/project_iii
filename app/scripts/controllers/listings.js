@@ -137,12 +137,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         const wrapper = document.getElementById("listings-wrapper");
         wrapper.innerHTML = "";
 
-        if (listings.length > 0) {
-            // Only show active listings for non-admin users
-            if (user.role !== 1) {
-                listings = listings.filter(listing => listing.enabled);
-            }
+        // Only show active listings for non-admin users
+        if (user.role !== 1) {
+            listings = listings.filter(listing => listing.enabled);
+        }
 
+        if (listings.length > 0) {
             for (const listing of listings) {
                 // Only show enabled listings
                 const listingItem = document.createElement("div");
@@ -286,13 +286,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 listingCenter.classList.add("flex", "flex-wrap", "gap-05", "flex-direction-column", "flex-grow");
 
                 const listingEnergy = document.createElement("h3");
-                const listingAmount = document.createElement("span");
                 for (const energy of energies) {
                     if (energy.id === listing.energyID) {
                         listingEnergy.innerHTML = `${energy.name} (${energy.unit})`;
                     }
                 }
-                listingAmount.innerHTML = `Amount: `;
 
                 const listingPrice = document.createElement("span");
                 listingPrice.innerHTML = `${listing.pricePerUnit}€ p/ Unit (${listing.amount} stock)`;
@@ -301,7 +299,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 listingCreatedAt.innerHTML = `Creation Date: ${formatDate(new Date(listing.createdAt))}`;
 
                 listingCenter.appendChild(listingEnergy);
-                listingCenter.appendChild(listingAmount);
                 listingCenter.appendChild(listingPrice);
                 listingCenter.appendChild(listingCreatedAt);
 
@@ -327,24 +324,27 @@ document.addEventListener("DOMContentLoaded", async () => {
                 listingViewBtn.appendChild(listingViewBtnIcon);
                 listingViewBtn.appendChild(listingViewBtnText);
 
-                // Enable/Disable Listing Button
-                const listingEnabledBtn = document.createElement("button");
-                listingEnabledBtn.setAttribute("type", "button");
-                listingEnabledBtn.classList.add("button-icon");
-                listingEnabledBtn.addEventListener("click", async () => enabledListing(listing.id, listing.enabled, refreshProducerListings));
+                // If the amount is 0 then the listing is sold
+                if (listing.amount != 0) {
+                    // Enable/Disable Listing Button
+                    const listingEnabledBtn = document.createElement("button");
+                    listingEnabledBtn.setAttribute("type", "button");
+                    listingEnabledBtn.classList.add("button-icon");
+                    listingEnabledBtn.addEventListener("click", async () => enabledListing(listing.id, listing.enabled, refreshProducerListings));
 
-                // Enable/Disable Listing Button Icon
-                const listingEnabledBtnIcon = document.createElement("i");
-                listingEnabledBtnIcon.classList.add("fa-regular", listing.enabled ? "fa-lock" : "fa-lock-open");
+                    // Enable/Disable Listing Button Icon
+                    const listingEnabledBtnIcon = document.createElement("i");
+                    listingEnabledBtnIcon.classList.add("fa-regular", listing.enabled ? "fa-lock" : "fa-lock-open");
 
-                // Enable/Disable Listing Button Text
-                const listingEnabledBtnText = document.createElement("span");
-                listingEnabledBtnText.innerHTML = listing.enabled ? "Disable" : "Enable";
+                    // Enable/Disable Listing Button Text
+                    const listingEnabledBtnText = document.createElement("span");
+                    listingEnabledBtnText.innerHTML = listing.enabled ? "Disable" : "Enable";
 
-                listingEnabledBtn.appendChild(listingEnabledBtnIcon);
-                listingEnabledBtn.appendChild(listingEnabledBtnText);
+                    listingEnabledBtn.appendChild(listingEnabledBtnIcon);
+                    listingEnabledBtn.appendChild(listingEnabledBtnText);
 
-                listingRight.appendChild(listingEnabledBtn);
+                    listingRight.appendChild(listingEnabledBtn);
+                }
 
                 listingRight.appendChild(listingViewBtn);
 
