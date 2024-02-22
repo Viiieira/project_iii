@@ -137,12 +137,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         const wrapper = document.getElementById("listings-wrapper");
         wrapper.innerHTML = "";
 
-        // Only show active listings for non-admin users
-        if (user.role !== 1) {
-            listings = listings.filter(listing => listing.enabled);
-        }
-
         if (listings.length > 0) {
+            // Only show active listings for non-admin users
+            if (user.role !== 1) {
+                listings = listings.filter(listing => listing.enabled);
+            }
+
             for (const listing of listings) {
                 // Only show enabled listings
                 const listingItem = document.createElement("div");

@@ -147,11 +147,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
-        // Make a transaction to buy the energies
         let transaction = await createTransaction(amountFieldBuy.value);
-        // Make a payment for the transaction
-        let payment = await createPayment(transaction.id, totalField.value, "mbway")
-        console.log(transaction);
+        await createPayment(transaction.id, totalField.value, "mbway");
+        let leftStockAmount = listing.amount - amountFieldBuy.value;
+        await updateListingStock(leftStockAmount);
+        if (leftStockAmount == 0) {
+            console.log("You're buying IT ALL!!!");
+            await disableListing();
+        }
+        window.location.href = "./";
     }
 
     async function createTransaction(amountFieldBuy) {
@@ -171,15 +175,48 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    async function createPayment(transactionID, total, method) {
+    async function createPayment(transactionID, totalPrice, method) {
         try {
-            const response = await fetch(`${apiUrl}transaction/create/`, {
+            const response = await fetch(`${apiUrl}payment/create/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${user.token}`,
                 },
-                body: JSON.stringify({ listingID: id, consumerID: user.id, amount: amountFieldBuy })
+                body: JSON.stringify({ transactionID, totalPrice, method })
+            });
+
+            return await response.json();
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    async function updateListingStock(newAmount) {
+        try {
+            const response = await fetch(`${apiUrl}listing/update/${listing.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${user.token}`,
+                },
+                body: JSON.stringify({ producerID: listing.producerID, energyID: listing.energyID, amount: newAmount, pricePerUnit: listing.pricePerUnit })
+            });
+
+            return await response.json();
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    async function disableListing() {
+        try {
+            const response = await fetch(`${apiUrl}listing/disable/${listing.id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${user.token}`,
+                },
             });
 
             return await response.json();
