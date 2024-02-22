@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         save.addEventListener("click", async () => {
             // Get all checked energies
-            const tbody = document.querySelector("#user-settings-data tbody");
+            const tbody = document.querySelector("#user-energy-preferences-data tbody");
             const checkedEnergies = Array.from(tbody.querySelectorAll("input[type='checkbox']:checked")).map(checkbox => parseInt(checkbox.name));
 
             // Get all the User's Energy Preferences (Only the IDs)
