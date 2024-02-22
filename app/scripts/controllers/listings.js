@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = "../login/";
     }
 
-    // If he's an admin
-    if (user.role === 1) {
+    // If he's not a producer
+    if (user.role !== 2) {
         // Remove the add listing button
         // Hide Producers Listings
         addButton.remove();
