@@ -1,4 +1,4 @@
-import { displayMessage, isBearerTokenValid, isLoggedIn, formatDate } from "../utils/utils.js";
+import { displayMessage, isBearerTokenValid, isLoggedIn } from "../utils/utils.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const apiUrl = "http://localhost:4242/api/";

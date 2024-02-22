@@ -194,14 +194,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 listingCenter.appendChild(listingCreatedAt);
 
                 const listingRight = document.createElement("div");
-                listingRight.classList.add("flex", "flex-wrap", "align-items-center", "justify-content-center", "flex-direction-column", "gap-1");
+                listingRight.classList.add("flex", "flex-wrap", "align-items-center", "justify-content-center", "gap-1");
 
                 // View Listing Button
                 const listingViewBtn = document.createElement("button");
                 listingViewBtn.setAttribute("type", "button");
                 listingViewBtn.classList.add("button-icon");
                 listingViewBtn.addEventListener("click", () => {
-                    window.location.href = `viewListing?id=${listing.id}`;
+                    window.location.href = `viewListing.html?id=${listing.id}`;
                 })
 
                 // View Listing Button Icon
@@ -306,14 +306,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 listingCenter.appendChild(listingCreatedAt);
 
                 const listingRight = document.createElement("div");
-                listingRight.classList.add("flex", "flex-wrap", "align-items-center", "justify-content-center", "flex-direction-column", "gap-1");
+                listingRight.classList.add("flex", "flex-wrap", "align-items-center", "justify-content-center", "gap-1");
 
                 // View Listing Button
                 const listingViewBtn = document.createElement("button");
                 listingViewBtn.setAttribute("type", "button");
                 listingViewBtn.classList.add("button-icon");
                 listingViewBtn.addEventListener("click", () => {
-                    window.location.href = `viewListing?id=${listing.id}`;
+                    window.location.href = `viewListing.html?id=${listing.id}`;
                 })
 
                 // View Listing Button Icon

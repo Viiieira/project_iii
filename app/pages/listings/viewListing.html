@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>View Listing</title>
+        <!-- FontAwesome -->
+        <link
+            rel="stylesheet"
+            href="../../styles/fontawesome/css/fontawesome.css"
+        />
+        <link rel="stylesheet" href="../../styles/fontawesome/css/brands.css" />
+        <link rel="stylesheet" href="../../styles/fontawesome/css/solid.css" />
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="../../styles/main.css" />
+    </head>
+    <!-- <body class="light-mode"> -->
+    <body>
+        <section class="container">
+            <div id="create-listing">
+                <button type="button" class="button-icon" id="go-back">
+                    <i class="fa-regular fa-arrow-left"></i>
+                    <span>Go Back</span>
+                </button>
+                <div class="dashboard-form">
+                    <form
+                        method="post"
+                        autocomplete="off"
+                        id="add-listing-form"
+                    >
+                        <h1>View Listing</h1>
+                        <div class="input-group">
+                            <label for="producerField">Producer</label>
+                            <input
+                                type="text"
+                                name="producer"
+                                id="producerField"
+                                disabled
+                            />
+                        </div>
+                        <div class="input-group">
+                            <label for="energyField">Energy</label>
+                            <input
+                                type="text"
+                                name="energy"
+                                id="energyField"
+                                disabled
+                            />
+                        </div>
+                        <div class="input-group">
+                            <label for="amountField">Amount</label>
+                            <input
+                                type="text"
+                                name="amount"
+                                id="amountField"
+                                disabled
+                            />
+                        </div>
+                        <div class="input-group">
+                            <label for="pricePerUnitField"
+                                >Price Per Unit</label
+                            >
+                            <input
+                                type="text"
+                                name="pricePerUnit"
+                                id="pricePerUnitField"
+                                disabled
+                            />
+                        </div>
+                        <div class="input-group">
+                            <label for="creationDateField">Creation Date</label>
+                            <input
+                                type="text"
+                                name="creationDate"
+                                id="creationDateField"
+                                disabled
+                            />
+                        </div>
+                        <div class="input-group">
+                            <label for="updateDateField">Update Date</label>
+                            <input
+                                type="text"
+                                name="updateDate"
+                                id="updateDateField"
+                                disabled
+                            />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <script
+            type="module"
+            src="../../scripts/controllers/viewListing.js"
+        ></script>
+        <script type="module" src="../../scripts/utils/navbar.js"></script>
+    </body>
+</html>
